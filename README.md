@@ -28,3 +28,11 @@ curl --request GET \
   --header 'Content-Type: application/json' \
   --data '{ "asset": "ADA", "days": 90 }'
 ```
+
+2. `/assets`
+```bash
+# e.g:
+curl --request GET \
+  --url http://localhost:2999/assets \
+  --header 'Content-Type: application/json'
+```
