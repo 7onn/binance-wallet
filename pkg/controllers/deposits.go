@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 	"os"
@@ -13,7 +12,7 @@ import (
 
 	"github.com/sirupsen/logrus"
 
-	"github.com/devbytom/bnb/pkg/utils"
+	"github.com/devbytom/binance-wallet/pkg/utils"
 )
 
 type getDepositReq struct {
@@ -37,7 +36,6 @@ func (r getDepositReq) new(days int, asset string) getDepositReq {
 func (r getDepositReq) parseQueryString() string {
 	o := reflect.ValueOf(r)
 	s := ""
-	fmt.Println(o)
 
 	for i := 0; i < o.NumField(); i++ {
 		p := utils.LowerFirstChar(o.Type().Field(i).Name)

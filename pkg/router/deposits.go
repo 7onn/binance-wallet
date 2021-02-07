@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/devbytom/bnb/pkg/controllers"
-	"github.com/devbytom/bnb/pkg/utils"
+	"github.com/devbytom/binance-wallet/pkg/controllers"
+	"github.com/devbytom/binance-wallet/pkg/utils"
 	"github.com/sirupsen/logrus"
 )
 

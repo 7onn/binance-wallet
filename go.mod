@@ -1,9 +1,8 @@
-module github.com/devbytom/bnb
+module github.com/devbytom/binance-wallet
 
 go 1.15
 
 require (
-	github.com/gobeam/stringy v0.0.0-20200717095810-8a3637503f62
 	github.com/gorilla/mux v1.8.0
 	github.com/joho/godotenv v1.3.0
 	github.com/sirupsen/logrus v1.7.0

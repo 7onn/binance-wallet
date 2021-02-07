@@ -3,7 +3,7 @@ package router
 import (
 	"net/http"
 
-	"github.com/devbytom/bnb/pkg/utils"
+	"github.com/devbytom/binance-wallet/pkg/utils"
 )
 
 //Healthcheck !

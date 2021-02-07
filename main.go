@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/devbytom/bnb/pkg/router"
+	"github.com/devbytom/binance-wallet/pkg/router"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
 	"github.com/sirupsen/logrus"
