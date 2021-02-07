@@ -35,21 +35,16 @@ func GetDeposits(w http.ResponseWriter, r *http.Request) {
 	utils.Respond(w, res)
 }
 
-type getDepositAddressReq struct {
-	Asset string `json:"asset"`
-}
-
 //GetDepositAddress !
 func GetDepositAddress(w http.ResponseWriter, r *http.Request) {
-	body := getDepositAddressReq{}
-
-	err := json.NewDecoder(r.Body).Decode(&body)
-	if err != nil {
-		utils.Respond(w, utils.Message(false, err.Error()))
+	qs := r.URL.Query()
+	asset := qs.Get("asset")
+	if asset == "" {
+		utils.Respond(w, utils.Message(false, "must provide 'asset' parameter on query string"))
 		return
 	}
 
-	res := controllers.GetDepositAddress(body.Asset)
+	res := controllers.GetDepositAddress(asset)
 
 	if !res.Success {
 		logrus.Error(res.Message)

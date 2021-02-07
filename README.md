@@ -43,7 +43,5 @@ curl --request GET \
 ```bash
 # e.g:
 curl --request GET \
-  --url http://localhost:2999/address \
-  --header 'Content-Type: application/json' \
-  --data '{ "asset": "ADA" }'
+  --url http://localhost:2999/address?asset=ADA
 ```
