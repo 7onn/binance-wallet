@@ -5,9 +5,6 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
-	"reflect"
-	"strconv"
-	"strings"
 	"time"
 
 	"github.com/sirupsen/logrus"
@@ -27,30 +24,8 @@ func (r getAssetsReq) new() getAssetsReq {
 	return r
 }
 
-func (r getAssetsReq) queryString() string {
-	o := reflect.ValueOf(r)
-	s := ""
-
-	for i := 0; i < o.NumField(); i++ {
-		p := utils.LowerFirstChar(o.Type().Field(i).Name)
-		s = s + p
-
-		f := o.Field(i)
-		switch f.Kind() {
-		case reflect.Int, reflect.Int16, reflect.Int32, reflect.Int64:
-			s = s + "=" + strconv.FormatInt(f.Int(), 10)
-		default:
-			s = s + "=" + f.String()
-		}
-
-		s = s + "&"
-
-	}
-	return strings.TrimSuffix(s, "&")
-}
-
-//Asset !
-type Asset map[string]AssetData
+//Assets !
+type Assets map[string]AssetData
 
 //AssetData !
 type AssetData struct {
@@ -64,14 +39,14 @@ type AssetData struct {
 //GetAssetsRes !
 type GetAssetsRes struct {
 	Success     bool   `json:"success"`
-	AssetDetail Asset  `json:"assetDetail"`
+	AssetDetail Assets `json:"assetDetail"`
 	Message     string `json:"msg,omitempty"`
 }
 
 //GetAssets !
 func GetAssets() GetAssetsRes {
 	p := "/wapi/v3/assetDetail.html"
-	qs := getAssetsReq{}.new().queryString()
+	qs := utils.QueryString(getAssetsReq{}.new())
 	sig := utils.GetHmac256(qs)
 	url := os.Getenv("API_URL") + p + "?" + qs + "&signature=" + sig
 
