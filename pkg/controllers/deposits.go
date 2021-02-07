@@ -33,7 +33,7 @@ func (r getDepositReq) new(days int, asset string) getDepositReq {
 	return r
 }
 
-func (r getDepositReq) parseQueryString() string {
+func (r getDepositReq) queryString() string {
 	o := reflect.ValueOf(r)
 	s := ""
 
@@ -75,7 +75,7 @@ type GetDepositRes struct {
 //GetDeposits !
 func GetDeposits(days int, asset string) GetDepositRes {
 	p := "/wapi/v3/depositHistory.html"
-	qs := getDepositReq{}.new(days, asset).parseQueryString()
+	qs := getDepositReq{}.new(days, asset).queryString()
 	sig := utils.GetHmac256(qs)
 	url := os.Getenv("API_URL") + p + "?" + qs + "&signature=" + sig
 
