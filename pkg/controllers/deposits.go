@@ -73,10 +73,35 @@ func GetDeposits(days int, asset string) GetDepositRes {
 	return *res
 }
 
+type getDepositAddressReq struct {
+	Asset      string `json:"asset"`
+	StartTime  int64  `json:"startTime"`
+	EndTime    int64  `json:"endTime"`
+	RecvWindow int    `json:"recvWindow"`
+	Timestamp  int64  `json:"timestamp"`
+}
+
+func (r getDepositAddressReq) new(asset string) getDepositAddressReq {
+	ms := time.Now().Unix() * 1000
+	r.Asset = asset
+	r.RecvWindow = 5000
+	r.Timestamp = ms
+	return r
+}
+
+//GetDepositAddressRes !
+type GetDepositAddressRes struct {
+	Success    bool   `json:"success"`
+	Address    string `json:"address"`
+	AddressTag string `json:"addressTag"`
+	Asset      string `json:"asset"`
+	Message    string `json:"msg,omitempty"`
+}
+
 //GetDepositAddress !
-func GetDepositAddress(days int, asset string) GetDepositRes {
+func GetDepositAddress(asset string) GetDepositAddressRes {
 	p := "/wapi/v3/depositAddress.html"
-	qs := utils.QueryString(getDepositReq{}.new(days, asset))
+	qs := utils.QueryString(getDepositAddressReq{}.new(asset))
 	sig := utils.GetHmac256(qs)
 	url := os.Getenv("API_URL") + p + "?" + qs + "&signature=" + sig
 
@@ -88,11 +113,11 @@ func GetDepositAddress(days int, asset string) GetDepositRes {
 	resp, err := c.Do(r)
 	if err != nil {
 		logrus.Error(url)
-		return GetDepositRes{}
+		return GetDepositAddressRes{}
 	}
 	defer resp.Body.Close()
 
-	res := &GetDepositRes{}
+	res := &GetDepositAddressRes{}
 	bs, _ := ioutil.ReadAll(resp.Body)
 	json.Unmarshal(bs, res)
 
