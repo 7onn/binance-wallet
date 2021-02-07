@@ -18,6 +18,7 @@ func main() {
 	r := mux.NewRouter()
 
 	r.HandleFunc("/healthcheck", router.Healthcheck)
+	r.HandleFunc("/assets", router.GetAssets)
 	r.HandleFunc("/deposits", router.GetDeposits)
 
 	http.Handle("/", r)
