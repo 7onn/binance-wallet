@@ -1,0 +1,29 @@
+version: "3.3"
+services:  
+  certbot:
+    image: certbot/certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+    command: certonly -d wallet.echotom.dev -m devbytom@gmail.com --debug-challenges --agree-tos --webroot -w /var/www/certbot -n
+    volumes:
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot/.well-known/acme-challenge
+      - ./data/logs:/var/log/letsencrypt
+  nginx:
+    image: devbytom/nginx:latest
+    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+    restart: always
+    build:
+      context: ./nginx/
+    container_name: nginx
+    volumes:
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/html/www/.well-known/acme-challenge
+    ports:
+      - "80:80"
+      - "443:443"
+  backend:
+    image: devbytom/binance-wallet:latest
+    restart: always
+    container_name: backend
+    environment:
+      PORT: "2999"
